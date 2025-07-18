@@ -55,12 +55,23 @@ object ExcelExporter {
                     totalCambio += ticket.cambio ?: 0.0
                 }
 
-                // Fila de totales
-                val totalRow = sheet.createRow(tickets.size + 1)
-                totalRow.createCell(2).setCellValue("TOTALES")
-                totalRow.createCell(3).setCellValue(totalPrecio)
-                totalRow.createCell(4).setCellValue(totalRecibido)
-                totalRow.createCell(5).setCellValue(totalCambio)
+                // Fila vacía
+                sheet.createRow(tickets.size + 1)
+
+                // Fila "Resumen"
+                val resumenTitleRow = sheet.createRow(tickets.size + 2)
+                resumenTitleRow.createCell(0).setCellValue("Resumen")
+
+                // Fila de resumen de totales y pasajeros
+                val resumenDataRow = sheet.createRow(tickets.size + 3)
+                resumenDataRow.createCell(0).setCellValue("Total pasajeros:")
+                resumenDataRow.createCell(1).setCellValue(tickets.size.toDouble())
+                resumenDataRow.createCell(2).setCellValue("Total precio:")
+                resumenDataRow.createCell(3).setCellValue(totalPrecio)
+                resumenDataRow.createCell(4).setCellValue("Total recibido:")
+                resumenDataRow.createCell(5).setCellValue(totalRecibido)
+                resumenDataRow.createCell(6).setCellValue("Total cambio:")
+                resumenDataRow.createCell(7).setCellValue(totalCambio)
 
                 // Guardar archivo en carpeta de Descargas
                 val fileName = "viaje_${idViaje}.xlsx"
