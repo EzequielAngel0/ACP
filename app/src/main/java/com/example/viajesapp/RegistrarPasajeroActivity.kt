@@ -23,7 +23,6 @@ class RegistrarPasajeroActivity : AppCompatActivity() {
         Pair("Ciudad A", "Ciudad B") to 20.0,
         Pair("Ciudad B", "Ciudad C") to 25.0,
         Pair("Ciudad A", "Ciudad C") to 30.0
-        // Puedes agregar más rutas aquí
     )
 
     override fun onCreate(savedInstanceState: Bundle?) {

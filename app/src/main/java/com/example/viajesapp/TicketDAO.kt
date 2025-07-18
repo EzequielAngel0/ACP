@@ -25,4 +25,11 @@ interface TicketDao {
     @Query("SELECT MAX(id) FROM tickets WHERE idViaje = :idViaje")
     suspend fun obtenerUltimoIdPorViaje(idViaje: String): Int?
 
+    @Query("SELECT * FROM tickets WHERE idViaje = :idViaje AND sincronizado = 0")
+    fun obtenerTicketsNoSincronizadosPorViaje(idViaje: String): List<TicketEntity>
+
+    @Query("SELECT * FROM tickets WHERE idViaje = :idViaje AND sincronizado = 1")
+    fun obtenerTicketsSincronizadosPorViaje(idViaje: String): List<TicketEntity>
+
+
 }

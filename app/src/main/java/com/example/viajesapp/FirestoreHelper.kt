@@ -26,7 +26,10 @@ object FirestoreHelper {
             val firestore = FirebaseFirestore.getInstance()
 
             for (ticket in ticketsNoSincronizados) {
+                val ticketIdFirestore = "${ticket.idViaje}_${ticket.id}"
+
                 val data = hashMapOf(
+                    "ticketId" to ticketIdFirestore,
                     "idViaje" to ticket.idViaje,
                     "origen" to ticket.origen,
                     "destino" to ticket.destino,
@@ -37,32 +40,27 @@ object FirestoreHelper {
                     "hora" to ticket.hora
                 )
 
-                val docRef = firestore
-                    .collection("viajes")
-                    .document(ticket.idViaje)
-                    .collection("tickets")
-                    .document(ticket.id.toString())
-
                 try {
-                    Log.d("SYNC_TEST", "Subiendo ticket: ${ticket.id} → $data")
-                    docRef.set(data).await()
+                    firestore
+                        .collection("viajes")
+                        .document(ticket.idViaje)
+                        .collection("tickets")
+                        .document(ticketIdFirestore)
+                        .set(data)
+                        .await()
+
                     ticketDao.actualizar(ticket.copy(sincronizado = true))
-                    Log.d("SYNC_TEST", "Ticket ${ticket.id} sincronizado exitosamente.")
                 } catch (e: Exception) {
-                    Log.e("SYNC_TEST", "Error al sincronizar ticket ${ticket.id}: ${e.message}")
+                    e.printStackTrace()
                     withContext(Dispatchers.Main) {
-                        Toast.makeText(context, "Error al sincronizar ticket ${ticket.id}", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(context, "Error al sincronizar ticket ID ${ticket.id}", Toast.LENGTH_SHORT).show()
                     }
                 }
             }
 
-            ticketDao.eliminarTicketsSincronizados()
-
             withContext(Dispatchers.Main) {
                 Toast.makeText(context, "Sincronización completada", Toast.LENGTH_LONG).show()
             }
-
         }
     }
-
 }

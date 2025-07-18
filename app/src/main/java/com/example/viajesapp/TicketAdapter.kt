@@ -14,6 +14,7 @@ class TicketAdapter(private val tickets: List<TicketEntity>) :
         val tvPrecio: TextView = itemView.findViewById(R.id.tvPrecio)
         val tvRecibido: TextView = itemView.findViewById(R.id.tvRecibido)
         val tvCambio: TextView = itemView.findViewById(R.id.tvCambio)
+        val tvSincronizado: TextView = itemView.findViewById(R.id.tvSincronizado)
         val tvFechaHora: TextView = itemView.findViewById(R.id.tvFechaHora)
     }
 
@@ -28,6 +29,7 @@ class TicketAdapter(private val tickets: List<TicketEntity>) :
         holder.tvPrecio.text = "Precio: $${ticket.precio}"
         holder.tvRecibido.text = "Recibido: $${ticket.recibido}"
         holder.tvCambio.text = "Cambio: $${ticket.cambio}"
+        holder.tvSincronizado.text = if (ticket.sincronizado) "✅ Sincronizado" else "❌ No sincronizado"
         holder.tvFechaHora.text = "${ticket.fecha} ${ticket.hora}"
     }
 
