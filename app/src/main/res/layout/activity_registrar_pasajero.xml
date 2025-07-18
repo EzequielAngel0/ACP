@@ -1,3 +1,5 @@
+<!-- activity_registrar_pasajero.xml -->
+
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -43,38 +45,6 @@
 
         <TextView
             android:id="@+id/tvPrecio"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="0.0"
-            android:background="#EEEEEE"
-            android:padding="8dp"
-            android:textSize="16sp" />
-
-        <!-- DINERO RECIBIDO -->
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Dinero recibido"
-            android:paddingTop="16dp"
-            android:paddingBottom="4dp" />
-
-        <EditText
-            android:id="@+id/etRecibido"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="numberDecimal"
-            android:hint="Ej: 50.0" />
-
-        <!-- CAMBIO -->
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Cambio"
-            android:paddingTop="16dp"
-            android:paddingBottom="4dp" />
-
-        <TextView
-            android:id="@+id/tvCambio"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="0.0"

@@ -10,8 +10,6 @@ data class TicketEntity(
     val origen: String,
     val destino: String,
     val precio: Double,
-    val recibido: Double,
-    val cambio: Double,
     val fecha: String,
     val hora: String,
     val sincronizado: Boolean = false

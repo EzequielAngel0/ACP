@@ -34,8 +34,6 @@ object FirestoreHelper {
                     "origen" to ticket.origen,
                     "destino" to ticket.destino,
                     "precio" to ticket.precio,
-                    "recibido" to ticket.recibido,
-                    "cambio" to ticket.cambio,
                     "fecha" to ticket.fecha,
                     "hora" to ticket.hora
                 )

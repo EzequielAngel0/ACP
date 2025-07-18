@@ -2,7 +2,6 @@ package com.example.viajesapp
 
 import android.content.Context
 import android.os.Bundle
-import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.ListView
@@ -46,7 +45,7 @@ class ListaPasajerosActivity : AppCompatActivity() {
             }
 
             val datos = tickets.map {
-                "${it.id}. ${it.origen} → ${it.destino} | \$${it.precio} | Recibido: \$${it.recibido} | Cambio: \$${it.cambio}"
+                "${it.id}. ${it.origen} → ${it.destino} | \$${it.precio}"
             }
 
             withContext(Dispatchers.Main) {
