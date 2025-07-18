@@ -11,7 +11,7 @@ android {
 
     defaultConfig {
         applicationId = "com.example.viajesapp"
-        minSdk = 24
+        minSdk = 26
         targetSdk = 36
         versionCode = 1
         versionName = "1.0"
@@ -55,5 +55,9 @@ dependencies {
 
 // Kotlin Extensions y Coroutines para Room
     implementation("androidx.room:room-ktx:2.6.1")
+
+    implementation("org.apache.poi:poi:5.2.3")
+    implementation("org.apache.poi:poi-ooxml:5.2.3")
+
 
 }

@@ -60,6 +60,17 @@ class MainActivity : AppCompatActivity() {
         btnFinalizarViaje.setOnClickListener {
             contadorFinalizar++
             if (contadorFinalizar >= 3) {
+                val idViaje = obtenerIdViaje()
+                if (idViaje != null) {
+                    lifecycleScope.launch {
+                        val dao = AppDatabase.getDatabase(this@MainActivity).ticketDao()
+                        val tickets = dao.obtenerTicketsPorViaje(idViaje)
+                        if (tickets.isNotEmpty()) {
+                            ExcelExporter.exportarTickets(this@MainActivity, tickets, idViaje)
+                        }
+                    }
+                }
+
                 borrarIdViaje()
                 contadorFinalizar = 0
                 actualizarVisibilidad()
@@ -68,6 +79,7 @@ class MainActivity : AppCompatActivity() {
                 Toast.makeText(this, "Presiona ${3 - contadorFinalizar} vez(es) más para confirmar", Toast.LENGTH_SHORT).show()
             }
         }
+
 
 
         btnRegistrarPasajero.setOnClickListener {
@@ -81,6 +93,7 @@ class MainActivity : AppCompatActivity() {
         btnSincronizar.setOnClickListener {
             FirestoreHelper.sincronizarTickets(this)
         }
+
         lifecycleScope.launch {
             val dao = AppDatabase.getDatabase(this@MainActivity).ticketDao()
             val tickets = dao.obtenerTodos() // Si tienes esta función
@@ -88,7 +101,6 @@ class MainActivity : AppCompatActivity() {
                 Log.d("TICKET", it.toString())
             }
         }
-
     }
 
     private fun obtenerFechaHoraActual(): String {
@@ -103,7 +115,9 @@ class MainActivity : AppCompatActivity() {
         btnIniciarViaje.visibility = if (viajeActivo) Button.GONE else Button.VISIBLE
         btnRegistrarPasajero.visibility = if (viajeActivo) Button.VISIBLE else Button.GONE
         btnMostrarPasajeros.visibility = if (viajeActivo) Button.VISIBLE else Button.GONE
+        btnFinalizarViaje.visibility = if (viajeActivo) Button.VISIBLE else Button.GONE
     }
+
 
     private fun generarIdViaje(): String {
         val sdf = SimpleDateFormat("yyyyMMdd_HHmm", Locale.getDefault())
