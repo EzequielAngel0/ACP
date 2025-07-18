@@ -1,0 +1,49 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/layoutMain"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:padding="24dp">
+
+    <TextView
+        android:id="@+id/tvFechaHora"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Fecha y hora"
+        android:textSize="18sp"
+        android:layout_marginBottom="24dp" />
+
+
+    <Button
+        android:id="@+id/btnIniciarViaje"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Iniciar viaje" />
+
+    <Button
+        android:id="@+id/btnRegistrarPasajero"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Registrar pasajero"
+        android:visibility="gone" />
+
+    <Button
+        android:id="@+id/btnMostrarPasajeros"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Mostrar pasajeros"
+        android:visibility="gone" />
+
+    <Button
+        android:id="@+id/btnSincronizar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Sincronizar" />
+
+    <Button
+        android:id="@+id/btnFinalizarViaje"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Finalizar viaje" />
+</LinearLayout>

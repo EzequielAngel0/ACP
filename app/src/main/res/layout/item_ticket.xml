@@ -1,0 +1,45 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="12dp"
+    android:background="#EEEEEE"
+    android:layout_marginBottom="8dp">
+
+    <TextView
+        android:id="@+id/tvRuta"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Origen - Destino"
+        android:textSize="16sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/tvPrecio"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Precio: $"
+        android:textSize="14sp" />
+
+    <TextView
+        android:id="@+id/tvRecibido"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Recibido: $"
+        android:textSize="14sp" />
+
+    <TextView
+        android:id="@+id/tvCambio"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Cambio: $"
+        android:textSize="14sp" />
+
+    <TextView
+        android:id="@+id/tvFechaHora"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Fecha Hora"
+        android:textSize="12sp"
+        android:textColor="#666666" />
+</LinearLayout>

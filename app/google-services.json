@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "442238486370",
+    "project_id": "viajesapp-2ac2c",
+    "storage_bucket": "viajesapp-2ac2c.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:442238486370:android:bb2b3a8fa1c4cb6f8e4e3b",
+        "android_client_info": {
+          "package_name": "com.example.viajesapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBPnTyaTZFZZ5w8nhcm4wnLw_JZOEJfIJY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
