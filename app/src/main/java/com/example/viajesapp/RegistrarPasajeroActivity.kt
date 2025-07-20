@@ -4,22 +4,29 @@ import android.content.Context
 import android.os.Bundle
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
-import kotlinx.coroutines.*
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.launch
 
 class RegistrarPasajeroActivity : AppCompatActivity() {
 
     private lateinit var spOrigen: Spinner
     private lateinit var spDestino: Spinner
     private lateinit var tvPrecio: TextView
-    private lateinit var btnGuardar: Button
+    private lateinit var cbAdultoMayor: CheckBox
+    private lateinit var cbMenorEdad: CheckBox
+    private lateinit var cbEstudiante: CheckBox
+    private lateinit var cbAsociado: CheckBox
+    private lateinit var btnImprimir: Button
 
     private val PREFS_NAME = "viaje_prefs"
     private val KEY_ID_VIAJE = "id_viaje_activo"
+    private val KEY_NUMERO_CAMION = "numero_camion"
 
-    private val precios = mapOf(
-        Pair("Ciudad A", "Ciudad B") to 20.0,
-        Pair("Ciudad B", "Ciudad C") to 25.0,
-        Pair("Ciudad A", "Ciudad C") to 30.0
+    private val preciosPorRuta = mapOf(
+        "Guadalajara" to mapOf("El Grullo" to 150.0, "Puerto Vallarta" to 300.0, "Tepic" to 400.0),
+        "El Grullo" to mapOf("Guadalajara" to 150.0, "Puerto Vallarta" to 180.0),
+        "Puerto Vallarta" to mapOf("Guadalajara" to 300.0, "El Grullo" to 180.0),
+        "Tepic" to mapOf("Guadalajara" to 400.0)
     )
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -29,70 +36,125 @@ class RegistrarPasajeroActivity : AppCompatActivity() {
         spOrigen = findViewById(R.id.spOrigen)
         spDestino = findViewById(R.id.spDestino)
         tvPrecio = findViewById(R.id.tvPrecio)
-        btnGuardar = findViewById(R.id.btnGuardar)
+        cbAdultoMayor = findViewById(R.id.cbAdultoMayor)
+        cbMenorEdad = findViewById(R.id.cbMenorEdad)
+        cbEstudiante = findViewById(R.id.cbEstudiante)
+        cbAsociado = findViewById(R.id.cbAsociado)
+        btnImprimir = findViewById(R.id.btnImprimir)
 
-        val destinos = listOf("Ciudad A", "Ciudad B", "Ciudad C")
-        spOrigen.adapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, destinos)
-        spDestino.adapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, destinos)
+        val lugares = listOf("Guadalajara", "El Grullo", "Puerto Vallarta", "Tepic")
+        val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, lugares)
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        spOrigen.adapter = adapter
+        spDestino.adapter = adapter
 
-        val listener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(parent: AdapterView<*>?, view: android.view.View?, position: Int, id: Long) {
-                actualizarPrecio()
+        val actualizarPrecio = {
+            val origen = spOrigen.selectedItem.toString()
+            val destino = spDestino.selectedItem.toString()
+            val base = preciosPorRuta[origen]?.get(destino) ?: 0.0
+
+            val descuento = when {
+                cbAdultoMayor.isChecked -> 0.20
+                cbMenorEdad.isChecked -> 0.15
+                cbEstudiante.isChecked -> 0.10
+                cbAsociado.isChecked -> 0.25
+                else -> 0.0
             }
 
+            val final = base * (1 - descuento)
+            tvPrecio.text = String.format("%.2f", final)
+        }
+
+        val checkBoxes = listOf(cbAdultoMayor, cbMenorEdad, cbEstudiante, cbAsociado)
+        for (cb in checkBoxes) {
+            cb.setOnCheckedChangeListener { _, isChecked ->
+                if (isChecked) {
+                    checkBoxes.filter { it != cb }.forEach { it.isChecked = false }
+                    actualizarPrecio()
+                } else {
+                    actualizarPrecio()
+                }
+            }
+        }
+
+
+
+        spOrigen.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>?, view: android.view.View?, position: Int, id: Long) = actualizarPrecio()
             override fun onNothingSelected(parent: AdapterView<*>?) {}
         }
 
-        spOrigen.onItemSelectedListener = listener
-        spDestino.onItemSelectedListener = listener
-
-        btnGuardar.setOnClickListener {
-            guardarTicket()
-        }
-    }
-
-    private fun actualizarPrecio() {
-        val origen = spOrigen.selectedItem.toString()
-        val destino = spDestino.selectedItem.toString()
-        val precio = precios[Pair(origen, destino)] ?: 0.0
-        tvPrecio.text = precio.toString()
-    }
-
-    private fun guardarTicket() {
-        val origen = spOrigen.selectedItem.toString()
-        val destino = spDestino.selectedItem.toString()
-        val precio = tvPrecio.text.toString().toDoubleOrNull() ?: 0.0
-
-        if (origen == destino) {
-            Toast.makeText(this, "Origen y destino no pueden ser iguales", Toast.LENGTH_SHORT).show()
-            return
+        spDestino.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>?, view: android.view.View?, position: Int, id: Long) = actualizarPrecio()
+            override fun onNothingSelected(parent: AdapterView<*>?) {}
         }
 
-        val idViaje = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
-            .getString(KEY_ID_VIAJE, null) ?: return
+        btnImprimir.setOnClickListener {
+            val origen = spOrigen.selectedItem.toString()
+            val destino = spDestino.selectedItem.toString()
+            val base = preciosPorRuta[origen]?.get(destino)
 
-        CoroutineScope(Dispatchers.IO).launch {
-            val dao = AppDatabase.getDatabase(applicationContext).ticketDao()
-            val ultimoId = dao.obtenerUltimoIdPorViaje(idViaje) ?: 0
-            val nuevoId = ultimoId + 1
+            if (origen == destino || base == null) {
+                Toast.makeText(this, "Ruta inválida", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
 
-            val ticket = TicketEntity(
-                id = nuevoId,
-                idViaje = idViaje,
-                origen = origen,
-                destino = destino,
-                precio = precio,
-                fecha = FechaUtils.obtenerFechaActual(),
-                hora = FechaUtils.obtenerHoraActual(),
-                sincronizado = false
-            )
+            val descuentoTipo = when {
+                cbAdultoMayor.isChecked -> "Adulto mayor"
+                cbMenorEdad.isChecked -> "Menor de edad"
+                cbEstudiante.isChecked -> "Estudiante"
+                cbAsociado.isChecked -> "Asociado"
+                else -> "Ninguno"
+            }
 
-            dao.insertar(ticket)
+            val porcentaje = when (descuentoTipo) {
+                "Adulto mayor" -> 0.20
+                "Menor de edad" -> 0.15
+                "Estudiante" -> 0.10
+                "Asociado" -> 0.25
+                else -> 0.0
+            }
 
-            withContext(Dispatchers.Main) {
-                Toast.makeText(this@RegistrarPasajeroActivity, "Ticket guardado", Toast.LENGTH_SHORT).show()
+            val final = base * (1 - porcentaje)
+            val idViaje = obtenerIdViaje() ?: run {
+                Toast.makeText(this, "No hay viaje activo", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            val numeroCamion = obtenerNumeroCamion()
+
+            lifecycleScope.launch {
+                val dao = AppDatabase.getDatabase(this@RegistrarPasajeroActivity).ticketDao()
+                val ultimoId = dao.obtenerUltimoIdPorViaje(idViaje) ?: 0
+                val nuevoId = ultimoId + 1
+
+                val ticket = TicketEntity(
+                    id = nuevoId,
+                    idViaje = idViaje,
+                    origen = origen,
+                    destino = destino,
+                    precio = String.format("%.2f", final).toDouble(),
+                    fecha = FechaUtils.obtenerFechaActual(),
+                    hora = FechaUtils.obtenerHoraActual(),
+                    numeroCamion = numeroCamion,
+                    descuentoAplicado = descuentoTipo,
+                    sincronizado = false
+                )
+
+                dao.insertar(ticket)
+                Toast.makeText(this@RegistrarPasajeroActivity, "Ticket registrado", Toast.LENGTH_SHORT).show()
                 finish()
             }
         }
+    }
+
+    private fun obtenerIdViaje(): String? {
+        return getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+            .getString(KEY_ID_VIAJE, null)
+    }
+
+    private fun obtenerNumeroCamion(): String {
+        return getSharedPreferences("configuracion", Context.MODE_PRIVATE)
+            .getString("numero_camion", "Desconocido") ?: "Desconocido"
     }
 }

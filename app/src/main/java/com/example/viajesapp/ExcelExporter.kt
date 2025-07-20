@@ -25,9 +25,9 @@ object ExcelExporter {
                     alignment = HorizontalAlignment.CENTER
                 }
 
-                // Encabezados
+                // Encabezados (agregado "Camión" después de "ID")
                 val header = sheet.createRow(0)
-                val columnas = listOf("ID", "Origen", "Destino", "Precio", "Fecha", "Hora")
+                val columnas = listOf("ID", "Camión", "Origen", "Destino", "Precio", "Fecha", "Hora")
                 columnas.forEachIndexed { i, titulo ->
                     val cell = header.createCell(i)
                     cell.setCellValue(titulo)
@@ -39,11 +39,12 @@ object ExcelExporter {
                 tickets.forEachIndexed { index, ticket ->
                     val row = sheet.createRow(index + 1)
                     row.createCell(0).setCellValue(ticket.id.toDouble())
-                    row.createCell(1).setCellValue(ticket.origen)
-                    row.createCell(2).setCellValue(ticket.destino)
-                    row.createCell(3).setCellValue(ticket.precio)
-                    row.createCell(4).setCellValue(ticket.fecha)
-                    row.createCell(5).setCellValue(ticket.hora)
+                    row.createCell(1).setCellValue(ticket.numeroCamion) // ← NUEVO DATO
+                    row.createCell(2).setCellValue(ticket.origen)
+                    row.createCell(3).setCellValue(ticket.destino)
+                    row.createCell(4).setCellValue(ticket.precio)
+                    row.createCell(5).setCellValue(ticket.fecha)
+                    row.createCell(6).setCellValue(ticket.hora)
 
                     totalPrecio += ticket.precio
                 }

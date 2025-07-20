@@ -1,53 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:padding="12dp"
-    android:background="#EEEEEE"
+    android:background="@drawable/rounded_button_gray"
     android:layout_marginBottom="8dp">
 
     <TextView
         android:id="@+id/tvRuta"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Origen - Destino"
-        android:textSize="16sp"
-        android:textStyle="bold" />
+        android:text="Origen → Destino"
+        android:textStyle="bold"
+        android:textColor="#000000"
+        android:textSize="16sp" />
 
     <TextView
         android:id="@+id/tvPrecio"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Precio: $"
-        android:textSize="14sp" />
-
-    <TextView
-        android:id="@+id/tvRecibido"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Recibido: $"
-        android:textSize="14sp" />
-
-    <TextView
-        android:id="@+id/tvCambio"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Cambio: $"
-        android:textSize="14sp" />
+        android:text="Precio: $0.00"
+        android:textColor="#333333" />
 
     <TextView
         android:id="@+id/tvSincronizado"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Sincronizado"
-        android:textColor="@android:color/holo_green_dark"/>
-
+        android:textColor="#555555" />
 
     <TextView
         android:id="@+id/tvFechaHora"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Fecha Hora"
-        android:textSize="12sp"
-        android:textColor="#666666" />
+        android:text="2025-07-20 14:30"
+        android:textColor="#777777" />
+
 </LinearLayout>

@@ -1,3 +1,7 @@
 <resources>
-    <string name="app_name">ViajesApp</string>
+    <string name="app_name">ACP</string>
+    <string name="logo_acp_desc">Logo de ACP</string>
+    <string name="autocamiones">Autocamiones</string>
+    <string name="del">del</string>
+    <string name="pacifico">Pacífico</string>
 </resources>

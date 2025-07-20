@@ -27,15 +27,19 @@ object FirestoreHelper {
 
             for (ticket in ticketsNoSincronizados) {
                 val ticketIdFirestore = "${ticket.idViaje}_${ticket.id}"
+                val ruta = "${ticket.origen} - ${ticket.destino}"
 
                 val data = hashMapOf(
                     "ticketId" to ticketIdFirestore,
                     "idViaje" to ticket.idViaje,
                     "origen" to ticket.origen,
                     "destino" to ticket.destino,
+                    "ruta" to ruta,  // NUEVO
                     "precio" to ticket.precio,
                     "fecha" to ticket.fecha,
-                    "hora" to ticket.hora
+                    "hora" to ticket.hora,
+                    "numeroCamion" to ticket.numeroCamion,             // NUEVO
+                    "descuentoAplicado" to ticket.descuentoAplicado    // NUEVO
                 )
 
                 try {
