@@ -6,8 +6,6 @@
     android:padding="24dp"
     android:background="#F8FAFC">
 
-    <!-- Flecha de retroceso -->
-
     <!-- Título -->
     <TextView
         android:id="@+id/tvTituloRuta"
@@ -30,37 +28,51 @@
         android:textColor="#000000"
         android:layout_marginBottom="24dp" />
 
-    <!-- Botón registrar pasajero -->
+    <!-- Botón registrar pasajero (más grande y casi cuadrado) -->
     <Button
         android:id="@+id/btnRegistrarPasajero"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="100dp"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/btn_registrar_pasajero"
         android:text="Registrar pasajero"
-        android:textStyle="bold"
         android:textColor="#FFFFFF"
-        android:layout_marginBottom="16dp"
-        android:backgroundTint="#007BFF" />
+        android:textSize="21dp"
+        android:textStyle="bold" />
 
-    <!-- Botón finalizar viaje -->
-    <Button
-        android:id="@+id/btnFinalizarViaje"
+
+    <!-- Espacio que empuja los botones hacia abajo -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+    <!-- Contenedor para los botones de finalizar -->
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Finalizar viaje"
-        android:textStyle="bold"
-        android:textColor="#000000"
-        android:layout_marginBottom="16dp"
-        android:backgroundTint="#cfdbe8" />
+        android:orientation="vertical">
 
-    <Button
-        android:id="@+id/btnFinalizarTodo"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Finalizar todo el viaje"
-        android:textStyle="bold"
-        android:textColor="#000000"
-        android:layout_marginBottom="16dp"
-        android:backgroundTint="#cfdbe8"
-         />
+        <!-- Botón finalizar viaje -->
+        <Button
+            android:id="@+id/btnFinalizarViaje"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Finalizar viaje"
+            android:textStyle="bold"
+            android:textColor="#000000"
+            android:layout_marginBottom="16dp"
+            android:backgroundTint="#cfdbe8" />
+
+        <Button
+            android:id="@+id/btnFinalizarTodo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:backgroundTint="#cfdbe8"
+            android:text="Finalizar todo el viaje"
+            android:textColor="#000000"
+            android:textStyle="bold" />
+    </LinearLayout>
 
 </LinearLayout>
