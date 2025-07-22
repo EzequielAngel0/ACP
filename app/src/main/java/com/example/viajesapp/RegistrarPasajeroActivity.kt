@@ -192,16 +192,6 @@ class RegistrarPasajeroActivity : AppCompatActivity() {
         """.trimIndent()
 
         try {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                if (ContextCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH_CONNECT) != PackageManager.PERMISSION_GRANTED) {
-                    ActivityCompat.requestPermissions(
-                        this,
-                        arrayOf(Manifest.permission.BLUETOOTH_CONNECT),
-                        1001
-                    )
-                    return
-                }
-            }
 
             val bluetoothAdapter = android.bluetooth.BluetoothAdapter.getDefaultAdapter()
             val device = bluetoothAdapter?.bondedDevices?.firstOrNull { it.name.contains("Printer", true) }
