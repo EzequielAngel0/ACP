@@ -6,6 +6,11 @@ import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.launch
+import android.Manifest
+import android.content.pm.PackageManager
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
+import android.os.Build
 
 class RegistrarPasajeroActivity : AppCompatActivity() {
 
@@ -77,8 +82,6 @@ class RegistrarPasajeroActivity : AppCompatActivity() {
             }
         }
 
-
-
         spOrigen.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>?, view: android.view.View?, position: Int, id: Long) = actualizarPrecio()
             override fun onNothingSelected(parent: AdapterView<*>?) {}
@@ -142,6 +145,7 @@ class RegistrarPasajeroActivity : AppCompatActivity() {
                 )
 
                 dao.insertar(ticket)
+                imprimirTicket(origen, destino, final, nuevoId, numeroCamion)
                 Toast.makeText(this@RegistrarPasajeroActivity, "Ticket registrado", Toast.LENGTH_SHORT).show()
                 finish()
             }
@@ -156,5 +160,67 @@ class RegistrarPasajeroActivity : AppCompatActivity() {
     private fun obtenerNumeroCamion(): String {
         return getSharedPreferences("configuracion", Context.MODE_PRIVATE)
             .getString("numero_camion", "Desconocido") ?: "Desconocido"
+    }
+
+    private fun imprimirTicket(
+        origen: String,
+        destino: String,
+        precio: Double,
+        idBoleto: Int,
+        numeroCamion: String
+    ) {
+        val fecha = FechaUtils.obtenerFechaActual()
+        val hora = FechaUtils.obtenerHoraActual()
+
+        val textoTicket = """
+            Boleto
+            ------------------------------
+            Camión:          $numeroCamion
+            Origen:          $origen
+            Destino:         $destino
+            ------------------------------
+            Número de boleto: $idBoleto
+            Precio:           $${String.format("%.2f", precio)}
+            Fecha:            $fecha
+            Hora:             $hora
+            ------------------------------
+            Para información de su siguiente viaje
+            llame a la terminal de destino.
+        """.trimIndent()
+
+        try {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                if (ContextCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH_CONNECT) != PackageManager.PERMISSION_GRANTED) {
+                    ActivityCompat.requestPermissions(
+                        this,
+                        arrayOf(Manifest.permission.BLUETOOTH_CONNECT),
+                        1001
+                    )
+                    return
+                }
+            }
+
+            val bluetoothAdapter = android.bluetooth.BluetoothAdapter.getDefaultAdapter()
+            val device = bluetoothAdapter?.bondedDevices?.firstOrNull { it.name.contains("Printer", true) }
+
+            if (device != null) {
+                val uuid = device.uuids.first().uuid
+                val socket = device.createRfcommSocketToServiceRecord(uuid)
+                socket.connect()
+
+                val outputStream = socket.outputStream
+                outputStream.write(textoTicket.toByteArray(Charsets.UTF_8))
+                outputStream.flush()
+
+                socket.close()
+
+                Toast.makeText(this, "Ticket impreso correctamente", Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(this, "Impresora no encontrada", Toast.LENGTH_SHORT).show()
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+            Toast.makeText(this, "Error al imprimir ticket: ${e.message}", Toast.LENGTH_LONG).show()
+        }
     }
 }
