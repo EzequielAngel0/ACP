@@ -6,7 +6,7 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 
-@Database(entities = [TicketEntity::class], version = 10) // ✅ Incrementa la versión si haces cambios
+@Database(entities = [TicketEntity::class], version = 12) // ✅ Incrementa la versión si haces cambios
 abstract class AppDatabase : RoomDatabase() {
     abstract fun ticketDao(): TicketDao
 

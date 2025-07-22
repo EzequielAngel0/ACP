@@ -130,6 +130,8 @@ class RegistrarPasajeroActivity : AppCompatActivity() {
                 val dao = AppDatabase.getDatabase(this@RegistrarPasajeroActivity).ticketDao()
                 val ultimoId = dao.obtenerUltimoIdPorViaje(idViaje) ?: 0
                 val nuevoId = ultimoId + 1
+                val rutaGuardada = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+                    .getString("ruta_actual", "$origen - $destino") ?: "$origen - $destino"
 
                 val ticket = TicketEntity(
                     id = nuevoId,
@@ -141,7 +143,8 @@ class RegistrarPasajeroActivity : AppCompatActivity() {
                     hora = FechaUtils.obtenerHoraActual(),
                     numeroCamion = numeroCamion,
                     descuentoAplicado = descuentoTipo,
-                    sincronizado = false
+                    sincronizado = false,
+                    ruta = rutaGuardada
                 )
 
                 dao.insertar(ticket)
@@ -223,4 +226,16 @@ class RegistrarPasajeroActivity : AppCompatActivity() {
             Toast.makeText(this, "Error al imprimir ticket: ${e.message}", Toast.LENGTH_LONG).show()
         }
     }
+
+    private fun obtenerRutaSeleccionada(): String {
+        return getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+            .getString("ruta_seleccionada", "Ruta desconocida") ?: "Ruta desconocida"
+    }
+
+    private fun obtenerRutaActual(): String {
+        return getSharedPreferences("viaje_prefs", Context.MODE_PRIVATE)
+            .getString("ruta_actual", "Ruta desconocida") ?: "Ruta desconocida"
+    }
+
+
 }

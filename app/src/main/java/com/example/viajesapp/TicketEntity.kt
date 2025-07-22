@@ -17,5 +17,6 @@ data class TicketEntity(
     val hora: String,
     val numeroCamion: String,         // ← NUEVO CAMPO
     val descuentoAplicado: String,    // ← NUEVO CAMPO
-    val sincronizado: Boolean
+    val sincronizado: Boolean,
+    val ruta: String
 )

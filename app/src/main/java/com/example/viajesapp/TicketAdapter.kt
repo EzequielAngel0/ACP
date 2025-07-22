@@ -23,7 +23,7 @@ class TicketAdapter(private val tickets: List<TicketEntity>) :
 
     override fun onBindViewHolder(holder: TicketViewHolder, position: Int) {
         val ticket = tickets[position]
-        holder.tvRuta.text = "${ticket.origen} → ${ticket.destino}"
+        holder.tvRuta.text = ticket.ruta
         holder.tvPrecio.text = "Precio: $${ticket.precio}"
         holder.tvSincronizado.text = if (ticket.sincronizado) "✅ Sincronizado" else "❌ No sincronizado"
         holder.tvFechaHora.text = "${ticket.fecha} ${ticket.hora}"

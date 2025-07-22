@@ -36,9 +36,19 @@ class MainActivity : AppCompatActivity() {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         spRuta.adapter = adapter
 
+
+
         actualizarVisibilidad()
 
         btnIniciarViaje.setOnClickListener {
+
+            val rutaSeleccionada = obtenerRutaSeleccionada()
+            getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+                .edit()
+                .putString("ruta_actual", rutaSeleccionada)
+                .apply()
+
+
             val idViaje = generarIdViaje()
             guardarIdViaje(idViaje)
 
@@ -84,10 +94,14 @@ class MainActivity : AppCompatActivity() {
         return sdf.format(Date())
     }
 
+    private val KEY_RUTA_SELECCIONADA = "ruta_seleccionada"
+
     private fun guardarIdViaje(id: String) {
+        val rutaSeleccionada = obtenerRutaSeleccionada()
         getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
             .edit()
             .putString(KEY_ID_VIAJE, id)
+            .putString(KEY_RUTA_SELECCIONADA, rutaSeleccionada) // ← guarda la ruta
             .apply()
     }
 

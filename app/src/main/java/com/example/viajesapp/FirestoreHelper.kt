@@ -27,7 +27,9 @@ object FirestoreHelper {
 
             for (ticket in ticketsNoSincronizados) {
                 val ticketIdFirestore = "${ticket.idViaje}_${ticket.id}"
-                val ruta = "${ticket.origen} - ${ticket.destino}"
+                val prefs = context.getSharedPreferences("viaje_prefs", Context.MODE_PRIVATE)
+                val ruta = ticket.ruta // ✅ Usa la ruta guardada correctamente
+
 
                 val data = hashMapOf(
                     "ticketId" to ticketIdFirestore,
