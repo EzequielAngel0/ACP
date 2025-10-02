@@ -1,7 +1,7 @@
 # ACP - Aplicación para Conductores de Autocamiones
 
 **Versión actual:** `v1.0`  
-**Fecha de lanzamiento:** 2 de Octubre de 2025  
+**Fecha de lanzamiento:** 01 de Octubre de 2025  
 
 Bienvenido a **ACP**, una aplicación diseñada específicamente para conductores de autocamiones. Esta herramienta busca simplificar la gestión de pasajeros, emisión de boletos y registro de viajes, con funcionalidades robustas tanto offline como sincronizadas.
 
