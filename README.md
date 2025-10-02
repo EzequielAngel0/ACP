@@ -1,129 +1,104 @@
-# 🚍 ACP
+# ACP - Aplicación para Conductores de Autocamiones
 
-Una aplicación móvil para la gestión de boletos de transporte público, diseñada para conductores de autobuses. Permite iniciar viajes, registrar pasajeros, calcular descuentos, generar boletos e imprimirlos por Bluetooth. La app funciona con base de datos local (Room) y sincronización con Firestore.
+**Versión actual:** `v1.0`  
+**Fecha de lanzamiento:** 2 de Octubre de 2025  
 
----
-
-## 🧭 Características principales
-
-- Registro de pasajeros con origen y destino.
-- Cálculo automático del precio con base en descuentos:
-  - Adulto mayor
-  - Estudiante
-  - Menor de edad
-  - Asociado
-- Generación automática de boleto con:
-  - Número de boleto
-  - Precio final
-  - Ruta del viaje
-  - Fecha y hora del registro
-- Impresión vía Bluetooth al detectar una impresora llamada “Printer”.
-- Almacenamiento local en base de datos Room.
-- Sincronización posterior a Firestore (opcional).
+Bienvenido a **ACP**, una aplicación diseñada específicamente para conductores de autocamiones. Esta herramienta busca simplificar la gestión de pasajeros, emisión de boletos y registro de viajes, con funcionalidades robustas tanto offline como sincronizadas.
 
 ---
 
-## 🖨 Ejemplo de boleto impreso
+## 🎯 Descripción general
 
-```
-Boleto
-------------------------------
-Camión:          11
-Origen:          Guadalajara
-Destino:         Puerto Vallarta
-------------------------------
-Número de boleto: 123456789
-Precio:           $25.00
-Fecha:            01/10/2025
-Hora:             16:45:22
-------------------------------
-Para información de su siguiente viaje
-llame a la terminal de destino.
-```
+ACP permite a los conductores realizar tareas esenciales de manera rápida y eficiente, tales como:
+
+- Registrar pasajeros con origen, destino y descuentos aplicables.
+- Calcular automáticamente los precios y emitir boletos impresos vía Bluetooth.
+- Gestionar viajes registrados de forma local y sincronizarlos con Firestore.
+- Exportar toda la información de los viajes a archivos Excel (.xlsx) para análisis posterior.
+
+Esta es la **primera versión pública** de la aplicación, enfocada en ofrecer un funcionamiento robusto y eficiente en zonas con conectividad limitada.
 
 ---
 
-## 🚦 Flujo de la aplicación
+## ✨ Funcionalidades principales
 
-1. **SeleccionarCamionActivity**
-   - Aparece al abrir la app por primera vez.
-   - El usuario elige el número de camión (6, 11, 18).
-   - Se guarda en `SharedPreferences` y no vuelve a mostrarse.
-
-2. **MainActivity**
-   - Menú principal con botones para:
-     - Iniciar viaje
-     - Registrar pasajero
-     - Finalizar viaje
-     - Sincronizar
-
-3. **RegistrarPasajeroActivity**
-   - El usuario selecciona origen/destino, aplica descuento (uno por pasajero).
-   - Se calcula el precio y se imprime el ticket al guardar.
-   - El ticket se guarda en Room y muestra mensaje de éxito.
+- 🚌 **Selección inicial del número de camión**, persistente durante la sesión.
+- 📍 **Ruta del viaje preestablecida** (ejemplo: Guadalajara → Tepic), incluida en todos los boletos.
+- 👤 **Registro de pasajeros** con datos como origen, destino y tipo de descuento (estudiantes, adultos mayores, etc.).
+- 🧾 **Impresión automática de boletos** con fecha y hora al registrar un pasajero.
+- 🔄 **Sincronización con Firestore** para respaldar los datos de tickets registrados.
+- 📤 **Exportación a Excel (.xlsx)** con información detallada de cada viaje:
+  - ID, origen, destino, precio, fecha, hora, número de camión, ruta y más.
+- ✅ **Gestión de permisos** al primer inicio (Bluetooth, almacenamiento, impresión).
+- 🛑 **Finalización de viaje segura**, con guardado de datos y cierre limpio de sesión.
 
 ---
 
-## 🛑 Permisos requeridos
+## 🛠️ Mejoras y correcciones recientes
 
-Se solicitan al abrir la app:
-
-- `BLUETOOTH_CONNECT` (Android 12+)
-- `BLUETOOTH_ADMIN`
-- `BLUETOOTH`
-- `ACCESS_FINE_LOCATION` (necesario para detectar dispositivos Bluetooth)
-
-La validación se hace en `SeleccionarCamionActivity` para evitar redundancia.
+- ✅ Impresión automática de boletos con fecha y hora actual.
+- 🧠 Persistencia de la ruta seleccionada al inicio del viaje.
+- 📁 Corrección en la exportación a Excel, incluyendo el campo del número de camión.
+- 🔧 Optimización del diseño y ubicación de botones para mejorar la experiencia de usuario.
 
 ---
 
-## 🗃 Estructura de datos
+## 📦 Instalación
 
-La tabla local `TicketEntity` contiene:
-
-| Campo              | Tipo     | Descripción                            |
-|--------------------|----------|----------------------------------------|
-| id                 | Int      | ID incremental del boleto              |
-| idViaje            | String   | ID del viaje activo                    |
-| origen             | String   | Lugar de partida                       |
-| destino            | String   | Lugar de destino                       |
-| precio             | Double   | Precio final con descuento             |
-| fecha              | String   | Fecha del registro                     |
-| hora               | String   | Hora del registro                      |
-| numeroCamion       | String   | Número del camión asignado             |
-| descuentoAplicado  | String   | Tipo de descuento aplicado             |
-| sincronizado       | Boolean  | Si ya fue sincronizado a Firestore     |
-| ruta               | String   | Ruta seleccionada al iniciar el viaje  |
+1. **Descargar:** Obtén el archivo `ACP.apk` desde la sección **Assets** en la pestaña de [Releases](https://github.com/EzequielAngel0/ViajesApp/releases).  
+2. **Instalar:** Copia el archivo en tu dispositivo Android e instálalo directamente.  
+3. **Permisos:** Acepta los permisos solicitados al abrir la aplicación por primera vez (Bluetooth, almacenamiento, etc.).
 
 ---
 
-## 🧠 Aprendizaje obtenido
+## 📢 Notas importantes de la versión
 
-Con esta aplicación se aprendió a:
+- **Estado actual:**  
+  Aunque la aplicación ya es funcional, aún está en desarrollo activo. Se invita a los usuarios a probarla y compartir comentarios para optimizar su desempeño.
 
-- Manejar Bluetooth en Android para impresión.
-- Usar Room como base de datos local.
-- Aplicar lógica de negocio con descuentos.
-- Almacenar datos persistentes con `SharedPreferences`.
-- Controlar flujos con una pantalla que solo aparece una vez.
-- Implementar permisos condicionales por versión de Android.
-- Construir interfaces dinámicas con `Spinner`, `CheckBox`, y `TextView`.
+- **Impresión Bluetooth:**  
+  La función de impresión está integrada, pero podría presentar errores en algunos casos debido a pruebas limitadas.
 
----
-
-## 🛠 Herramientas usadas
-
-- **Android Studio**
-- **Kotlin**
-- **Room Database**
-- **Bluetooth API**
-- **Firestore (opcional para sincronizar)**
-- **SharedPreferences**
+- **Futuras actualizaciones:**  
+  - Ampliación de rutas de autobuses.
+  - Optimización de procesos y detalles de diseño.
+  - Desarrollo de aplicaciones complementarias para clientes y taquillas.
 
 ---
 
-## 📂 Autor
+## 📄 Licencia
 
-**Barbosa Lomelí Angel Ezequiel**  
-Alumno CETI Tonalá Virtual  
-ID: 22300183
+Este proyecto está bajo licencia EULA (Acuerdo de Licencia de Usuario Final). Consulta el archivo [EULA.md](./EULA.md) para más detalles sobre los términos de uso.
+
+---
+
+<h2 align="center">📫 Contáctame</h2>
+
+<table align="center">
+  <tr>
+    <td style="padding-left: 15px;">
+      <ul style="list-style-type: none; padding-left: 0;">
+        <li>
+          <a href="https://www.linkedin.com/in/angelezequiel">
+            <img src="https://img.shields.io/badge/LinkedIn-0077B5?style=flat-square&logo=linkedin&logoColor=white"/>
+          </a>
+        </li>
+        <li>
+          <a href="https://x.com/Ezequiel27Angel">
+            <img src="https://img.shields.io/badge/X-000000?style=flat-square&logo=x&logoColor=white"/>
+          </a>
+        </li>
+        <li>
+          <a href="https://discord.com/users/angelezequiel">
+            <img src="https://img.shields.io/badge/Discord-5865F2?style=flat-square&logo=discord&logoColor=white"/>
+          </a>
+        </li>
+        <li>
+          <a href="mailto:barbosalomeliangelezequiel@gmail.com">
+            <img src="https://img.shields.io/badge/Email-D14836?style=flat-square&logo=gmail&logoColor=white"/>
+          </a>
+        </li>
+      </ul>
+    </td>
+  </tr>
+</table>
