@@ -38,7 +38,7 @@ Este EULA permanecerá en vigor hasta que sea terminado. La violación de cualqu
 ---
 
 ### 6. Legislación aplicable
-Este acuerdo se regirá e interpretará de acuerdo con las leyes vigentes en México. Cualquier disputa será resuelta en los tribunales de México, salvo que las partes acuerden otro mecanismo de resolución de conflictos.
+Este acuerdo se regirá e interpretará de acuerdo con las leyes vigentes en México. Cualquier disputa será resuelta en los tribunales de Guadalajara, Jalisco, salvo que las partes acuerden otro mecanismo de resolución de conflictos.
 
 ---
 
